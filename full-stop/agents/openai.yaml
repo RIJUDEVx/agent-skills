@@ -1,0 +1,5 @@
+interface:
+  display_name: "Full Stop"
+  short_description: "Finish the work and stop with the PR ready to merge"
+policy:
+  allow_implicit_invocation: false

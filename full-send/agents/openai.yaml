@@ -1,0 +1,5 @@
+interface:
+  display_name: "Full Send"
+  short_description: "Finish the work end-to-end and merge it"
+policy:
+  allow_implicit_invocation: false

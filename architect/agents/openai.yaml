@@ -1,0 +1,5 @@
+interface:
+  display_name: "Architect"
+  short_description: "Sketch a design before code, or survey code for deepening"
+policy:
+  allow_implicit_invocation: false
