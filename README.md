@@ -1,87 +1,78 @@
 # Agent skills
 
-The skills I use every day to plan, build, review, and ship code with coding agents.
+My global skills for coding agents. They take a piece of work from "I'm not sure what I want" to a merged pull request. I can walk away while the agent builds, proves, and reviews the change.
 
-They are small Markdown files. Any agent that reads `SKILL.md` files can use them: Claude Code, Codex, OpenCode, and others. A few parts are tuned for T3 Code, which lets one thread hand work to models from several providers.
+They are plain Markdown (`SKILL.md` files) and work in Claude Code, Codex, and OpenCode. They work best in T3 Code, which lets one thread hand work to models from different providers. Outside T3 Code, the skills fall back to the harness's own sub-agents.
 
-Most of these started as other people's skills. I trimmed them, joined them into one pipeline, and changed the parts that did not fit how I work. See [Credits](#credits).
+## What to type, and when
 
-## Install
+| Situation | Type | What happens |
+|---|---|---|
+| I don't know what to build yet, or how it should be shaped | `$architect` | The agent reads the code the change touches, asks you questions, sketches two or more designs, and stops with one agreed design. It writes no code. |
+| I know what I want and will merge it myself | `$full-stop` | The agent builds, proves, and reviews the change, then opens a PR and gets it ready. You merge. |
+| I know what I want and I'm not watching | `$full-send` | Same as `$full-stop`, then the agent merges the PR once every check passes. |
+| There are issues or outside PRs to sort | `$triage` | The agent labels them, reproduces bug reports, and writes briefs an agent can pick up. |
+| A session went badly | `$retro` | The agent suggests changes to checks, docs, and steering files that would have prevented the mistakes. |
+| The agent's last message made no sense | `$wait-what` | The agent explains it again in simple words, using the project's glossary. |
 
-Clone the repo where your agents look for global skills:
+Claude Code also accepts `/full-send` and so on.
+
+A common path: `$architect` to agree on the shape, then `$full-stop` to build it.
+
+## What a `$full-send` run does
+
+1. **Frame.** It writes the goal, what "done" means, what is out of scope, and how it will prove the change works.
+2. **Size.** It picks a route:
+   - **Direct:** one small concern. It builds the change straight away.
+   - **Design:** it fits one session, but the shape is open. It runs `architect` first and makes the design decisions itself.
+   - **Split:** too big for one session. It designs, cuts the work into tickets, and builds them in parallel worktrees.
+3. **Impact check.** It asks what else the change could break, and proves the one fact the change depends on.
+4. **Build and prove.** It tests first where a test is cheap. Proof means something it saw in the session: a reproduction that now passes, the repo's CI command, or the running app for UI changes.
+5. **Review.** Up to three passes, and it fixes or declines each finding before the next:
+   - `code-review` checks the repo's standards and the original spec.
+   - `interrogate` has several models try to break risky changes (auth, payments, data loss, concurrency). Only findings a run proves count.
+   - A review loop with one outside model, three rounds at most.
+6. **Ship.** It opens the PR with the repo's own PR rules, waits for CI, and answers review comments.
+7. **Merge or stop.** `$full-send` merges only when the proof covers the whole diff, the required check is green on the latest commit, and no review asks for changes. `$full-stop` stops here.
+8. **Report.** It lists the route, which stages ran or were skipped and why, the proof, and every decision it made for you.
+
+It asks you only when it can't prove the change, can't get the checks to pass, or the next step is risky (deleting data, touching production, closing a PR). Everything else it decides and lists in the report.
+
+## Skills the agent loads on its own
+
+You can type these too, but usually another skill or the agent pulls them in.
+
+- **[grilling](./grilling/SKILL.md)**: Asks you questions in numbered rounds, each with a recommended answer. Records agreed terms in `GLOSSARY.md` and hard-to-reverse decisions as ADRs.
+- **[code-review](./code-review/SKILL.md)**: Reviews a diff on two separate axes at once: does it follow the repo's rules, and does it do what the issue asked.
+- **[interrogate](./interrogate/SKILL.md)**: Has 3 or 4 models from different families try to break a change. A finding counts only if a command shows the failure.
+- **[unslop](./unslop/SKILL.md)**: Rewrites PR bodies and docs so they don't read as machine-written.
+- **[t3-tools](./t3-tools/SKILL.md)**: The exact T3 Code tool names, and the model tiers that decide which model does which job.
+
+## Setup
+
+You need `git`, and the GitHub CLI (`gh`) logged in, for the PR steps.
+
+The skills call each other, so install the whole set, not single skills:
 
 ```bash
 git clone https://github.com/RIJUDEVx/agent-skills ~/.agents/skills
-ln -s ~/.agents/skills ~/.claude/skills   # Claude Code reads ~/.claude/skills
+ln -s ~/.agents/skills ~/.claude/skills   # only if you use Claude Code
 ```
 
-Or copy single skills into a project with the [skills CLI](https://skills.sh):
+Then change two things that are specific to my machine:
 
-```bash
-npx skills@latest add RIJUDEVx/agent-skills
-```
+1. **Paths.** `full-send` and `full-stop` load their guides from `/Users/home/.agents/skills/...`. Replace `/Users/home` with your home directory.
+2. **Models.** The Tiers table in [`t3-tools`](./t3-tools/SKILL.md) lists the models I use (Fast, Balanced, Strong, Cheap strong). Replace them with yours.
 
-Two things to change before you use `full-send` or `full-stop`:
+The skills read per-repo rules from the repo itself, so put those in the repo, not here. A repo's `AGENTS.md`, `CONTRIBUTING.md`, and `.agents/skills/pr/SKILL.md` set its base branch, CI command, and PR format. `.agents/docs/issue-tracker.md` tells `triage` and `code-review` where the issues live.
 
-- They load their guides by absolute path (`/Users/home/.agents/skills/...`). Replace `/Users/home` with your home directory.
-- The model tiers in [`t3-tools`](./t3-tools/SKILL.md) list the models I pay for. Put your own models in the Tiers table.
+## Layout
 
-## How they fit together
-
-```
- unclear what to build?          clear enough?
-          │                            │
-     $architect ── grilling            │
-          │      (asks you)            │
-          ▼                            ▼
-   agreed design ─────────────► $full-stop  ── PR ready, you merge
-                                $full-send  ── PR merged for you
-```
-
-`$full-send` runs 13 stages: frame, size, impact, design, plan, build, prove, review, open PR, push and gate, babysit, merge, report. Stage 2 picks a route:
-
-| Route | When | Extra stages |
-|---|---|---|
-| Direct | One concern, obvious shape | none |
-| Design | Fits one session, shape is open | `architect` |
-| Split | Too big for one session | `architect`, then tickets and parallel workers |
-
-Every change goes through up to three review passes before the PR opens: `code-review` (repo standards and the spec), `interrogate` for risky changes (several models try to break it, and only findings a run proves count), and a review loop with one outside model.
-
-`$full-stop` does the same work but never merges.
-
-## Reference
-
-**User-invoked** skills run only when you type them. They orchestrate. **Model-invoked** skills can also be loaded by the agent when the task fits. They hold the reusable discipline.
-
-### User-invoked
-
-- **[architect](./architect/SKILL.md)**: Work out what to build, trace the code it touches, sketch at least two designs on different models, and stop with one agreed design. Also surveys a codebase for deepening opportunities.
-- **[full-send](./full-send/SKILL.md)**: Finish the work end to end: build, prove, review, open the PR, wait for CI, fix review comments, and merge.
-- **[full-stop](./full-stop/SKILL.md)**: Everything `full-send` does, but stop with the PR ready for you to merge.
-- **[triage](./triage/SKILL.md)**: Move issues and outside PRs through triage labels, verify claims, and write briefs an agent can pick up.
-- **[retro](./retro/SKILL.md)**: After a session, suggest changes to the agent's environment (checks, docs, steering files, tools) that would have prevented its mistakes.
-- **[wait-what](./wait-what/SKILL.md)**: Fire this when a message doesn't land. The agent explains it again, simply, with your glossary terms.
-
-### Model-invoked
-
-- **[grilling](./grilling/SKILL.md)**: Ask you about a plan in rounds of numbered questions, each with a recommended answer, and write `GLOSSARY.md` and ADRs as decisions land.
-- **[code-review](./code-review/SKILL.md)**: Review a diff on two separate axes in parallel: Standards (repo rules plus a Fowler smell baseline) and Spec (did it do what the issue asked).
-- **[interrogate](./interrogate/SKILL.md)**: Have 3 or 4 models from different families try to break a change. A finding survives only if a run proves it. Also has a blast-radius mode for "what does this break beyond the diff?"
-- **[unslop](./unslop/SKILL.md)**: Rewrite PR bodies, docs, and other prose to remove the patterns that make text read as machine-written.
-- **[t3-tools](./t3-tools/SKILL.md)**: The exact T3 Code tool names for delegating to other models, linking and watching PRs, and showing visuals, plus the model tiers every other skill uses.
-
-### Guides inside full-send
-
-These are not skills on their own. `full-send` loads them when a route needs them.
-
-- [`to-tickets`](./full-send/routes/to-tickets/GUIDE.md): Write a spec if there is none, then cut it into tracer-bullet tickets with blocking edges.
-- [`implement`](./full-send/routes/implement/GUIDE.md): Build from a spec or tickets with a TDD loop, fanning tickets out to parallel workers in their own worktrees.
-- [`review-loop`](./full-send/references/review-loop.md): Rounds with one outside reviewer, a severity ledger, and rules for when to stop.
+Each folder is one skill: `SKILL.md` is what the agent reads, and `references/` holds longer material it reads when needed. `agents/openai.yaml` is Codex metadata. `full-send/routes/` holds two guides that only `full-send` uses: `to-tickets` (spec to tickets) and `implement` (TDD loop and parallel workers).
 
 ## Credits
 
-These skills are adapted from MIT-licensed work. The original copyright notices are in [THIRD_PARTY_NOTICES.md](./THIRD_PARTY_NOTICES.md).
+Most of these started as other people's skills. I cut them down, joined them into one pipeline, and rewrote the parts that didn't fit how I work. The original MIT notices are in [THIRD_PARTY_NOTICES.md](./THIRD_PARTY_NOTICES.md).
 
 - [mattpocock/skills](https://github.com/mattpocock/skills) by Matt Pocock: `grilling`, `code-review`, `triage`, `retro`, `wait-what`, the codebase survey in `architect`, and the `to-tickets` and `implement` guides.
 - [pstack](https://github.com/cursor/plugins) by Lauren Tan: `architect`, `interrogate`, `unslop`.
