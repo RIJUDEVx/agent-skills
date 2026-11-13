@@ -1,6 +1,8 @@
 # Agent skills
 
-My global skills for coding agents. They take a piece of work from "I'm not sure what I want" to a merged pull request. I can walk away while the agent builds, proves, and reviews the change.
+My global skills for coding agents. The core set takes a piece of work from "I'm not sure what I want" to a merged pull request. I can walk away while the agent builds, proves, and reviews the change.
+
+Around that core sit the skills every repo needs: opening a pull request, diagnosing a bug, writing a document an agent reads well, and the craft rules that keep an interface from breaking under real use.
 
 They are plain Markdown (`SKILL.md` files) and work in Claude Code, Codex, and OpenCode. They work best in T3 Code, which lets one thread hand work to models from different providers. Outside T3 Code, the skills fall back to the harness's own sub-agents.
 
@@ -61,12 +63,19 @@ These are not part of the pipeline above. They are here because every repo needs
 ## Skills for the interface
 
 - **[design-engineering](./design-engineering/SKILL.md)**: The craft rules that only break after the build: a hover that moves the layout, a weight that is wider than the one it replaced, a transition that drops frames. Start with the nav-hover rule, then the variable-font axes.
+
+  > Making nav links bold on hover pushes everything next to them. Heavier weights are also wider. Variable fonts with a grade axis get darker without getting wider:
+  >
+  > ```css
+  > a:hover {
+  >   font-variation-settings: "GRAD" 150;
+  > }
+  > ```
 - **[impeccable](./impeccable/SKILL.md)**: A design director for interface work: shape, critique, audit, animate, typeset, colour, motion, accessibility, and design-system capture.
 - **[improve-animations](./improve-animations/SKILL.md)**: Surveys a codebase's motion code and writes prioritized, self-contained plans for other agents to execute. Read-only on source.
 - **[vitest](./vitest/SKILL.md)**: Vitest's API, mocking, configuration, and test filtering, in one reference.
 - **[cloudflare](./cloudflare/SKILL.md)**: Picks the Cloudflare product for a job, then loads the reference for it.
 - **[analyze-logs](./analyze-logs/SKILL.md)** and **[build-audit-logs](./build-audit-logs/SKILL.md)**: Read structured wide-event logs, and build or review an audit trail on top of them.
-
 
 ## Setup
 
@@ -79,6 +88,10 @@ git clone https://github.com/RIJUDEVx/agent-skills ~/.agents/skills
 ln -s ~/.agents/skills ~/.claude/skills   # only if you use Claude Code
 ```
 
+OpenCode finds them at `~/.agents/skills` on its own, so the symlink is only for Claude Code.
+
+The repo ships the `impeccable` launcher binary for macOS on Apple silicon, which is most of its size. It downloads a binary on first run if the one for your platform is missing.
+
 Then change two things that are specific to my machine:
 
 1. **Paths.** `full-send` and `full-stop` load their guides from `/Users/home/.agents/skills/...`. Replace `/Users/home` with your home directory.
@@ -86,9 +99,13 @@ Then change two things that are specific to my machine:
 
 The skills read per-repo rules from the repo itself, so put those in the repo, not here. A repo's `AGENTS.md`, `CONTRIBUTING.md`, and `.agents/skills/pr/SKILL.md` set its base branch, CI command, and PR format. The global [`pr`](./pr/SKILL.md) skill reads those same places and fills in the gaps when a repo documents none. `.agents/docs/issue-tracker.md` tells `triage` and `code-review` where the issues live.
 
+A repo's own `.agents/skills/` wins over this repo for the same skill name. That is how a repo overrides the global `pr` skill with its own base branch, labels, and boards.
+
 ## Layout
 
 Each folder is one skill: `SKILL.md` is what the agent reads, and `references/` holds longer material it reads when needed. `agents/openai.yaml` is Codex metadata. `full-send/routes/` holds two guides that only `full-send` uses: `to-tickets` (spec to tickets) and `implement` (TDD loop and parallel workers).
+
+A skill is one directory with one `SKILL.md` at its root. The `name` in the frontmatter is a label; the directory name is the ID the agent loads it by. Two skills with the same name in different scopes are the same skill to the agent, and the nearer one wins.
 
 ## Credits
 
