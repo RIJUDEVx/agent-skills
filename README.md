@@ -48,6 +48,26 @@ You can type these too, but usually another skill or the agent pulls them in.
 - **[unslop](./unslop/SKILL.md)**: Rewrites PR bodies and docs so they don't read as machine-written.
 - **[t3-tools](./t3-tools/SKILL.md)**: The exact T3 Code tool names, and the model tiers that decide which model does which job.
 
+## Skills for the work itself
+
+These are not part of the pipeline above. They are here because every repo needs them.
+
+- **[pr](./pr/SKILL.md)**: Opens, updates and dresses a pull request. Reads the repo's base branch, PR template, title format, labels and checks instead of inventing one. A repo's own `.agents/skills/pr/SKILL.md` overrides it.
+- **[diagnosing-bugs](./diagnosing-bugs/SKILL.md)**: Builds a tight failing signal first, then explains the cause. Useful when a failure, flake or slowdown has no obvious reason.
+- **[writing-for-agents](./writing-for-agents/SKILL.md)**: How to write a document an agent reads well: skills, `AGENTS.md`, or a doc reached by a pointer.
+- **[gh](./gh/SKILL.md)**: GitHub CLI patterns: structured output, pagination, repo targeting, search vs list, the `gh api` fallback.
+- **[no-use-effect](./no-use-effect/SKILL.md)**: The React rule that components never call `useEffect` directly: derive state, handle events, use a data library, or use `useMountEffect`.
+
+## Skills for the interface
+
+- **[design-engineering](./design-engineering/SKILL.md)**: The craft rules that only break after the build: a hover that moves the layout, a weight that is wider than the one it replaced, a transition that drops frames. Start with the nav-hover rule, then the variable-font axes.
+- **[impeccable](./impeccable/SKILL.md)**: A design director for interface work: shape, critique, audit, animate, typeset, colour, motion, accessibility, and design-system capture.
+- **[improve-animations](./improve-animations/SKILL.md)**: Surveys a codebase's motion code and writes prioritized, self-contained plans for other agents to execute. Read-only on source.
+- **[vitest](./vitest/SKILL.md)**: Vitest's API, mocking, configuration, and test filtering, in one reference.
+- **[cloudflare](./cloudflare/SKILL.md)**: Picks the Cloudflare product for a job, then loads the reference for it.
+- **[analyze-logs](./analyze-logs/SKILL.md)** and **[build-audit-logs](./build-audit-logs/SKILL.md)**: Read structured wide-event logs, and build or review an audit trail on top of them.
+
+
 ## Setup
 
 You need `git`, and the GitHub CLI (`gh`) logged in, for the PR steps.
@@ -64,7 +84,7 @@ Then change two things that are specific to my machine:
 1. **Paths.** `full-send` and `full-stop` load their guides from `/Users/home/.agents/skills/...`. Replace `/Users/home` with your home directory.
 2. **Models.** The Tiers table in [`t3-tools`](./t3-tools/SKILL.md) lists the models I use (Fast, Balanced, Strong, Cheap strong). Replace them with yours.
 
-The skills read per-repo rules from the repo itself, so put those in the repo, not here. A repo's `AGENTS.md`, `CONTRIBUTING.md`, and `.agents/skills/pr/SKILL.md` set its base branch, CI command, and PR format. `.agents/docs/issue-tracker.md` tells `triage` and `code-review` where the issues live.
+The skills read per-repo rules from the repo itself, so put those in the repo, not here. A repo's `AGENTS.md`, `CONTRIBUTING.md`, and `.agents/skills/pr/SKILL.md` set its base branch, CI command, and PR format. The global [`pr`](./pr/SKILL.md) skill reads those same places and fills in the gaps when a repo documents none. `.agents/docs/issue-tracker.md` tells `triage` and `code-review` where the issues live.
 
 ## Layout
 
@@ -72,11 +92,19 @@ Each folder is one skill: `SKILL.md` is what the agent reads, and `references/` 
 
 ## Credits
 
-Most of these started as other people's skills. I cut them down, joined them into one pipeline, and rewrote the parts that didn't fit how I work. The original MIT notices are in [THIRD_PARTY_NOTICES.md](./THIRD_PARTY_NOTICES.md).
+Most of these started as other people's skills. I cut them down, joined them into one pipeline, and rewrote the parts that didn't fit how I work. The original notices, including the Apache 2.0 ones, are in [THIRD_PARTY_NOTICES.md](./THIRD_PARTY_NOTICES.md).
 
-- [mattpocock/skills](https://github.com/mattpocock/skills) by Matt Pocock: `grilling`, `code-review`, `triage`, `retro`, `wait-what`, the codebase survey in `architect`, and the `to-tickets` and `implement` guides.
+- [mattpocock/skills](https://github.com/mattpocock/skills) by Matt Pocock: `grilling`, `code-review`, `triage`, `retro`, `wait-what`, the codebase survey in `architect`, the `to-tickets` and `implement` guides, `writing-for-agents`, `diagnosing-bugs`.
 - [pstack](https://github.com/cursor/plugins) by Lauren Tan: `architect`, `interrogate`, `unslop`.
 - [tstack](https://github.com/t3dotgg/tstack) by Theo Browne: `full-send`, `full-stop`.
+- [cli/cli](https://github.com/cli/cli): `gh`.
+- [antfu/skills](https://github.com/antfu/skills): `vitest`.
+- [emilkowalski/skills](https://github.com/emilkowalski/skills): `improve-animations`.
+- [evloghq/evlog](https://github.com/evloghq/evlog): `analyze-logs`, `build-audit-logs`.
+- [pbakaus/impeccable](https://github.com/pbakaus/impeccable) and [cloudflare/skills](https://github.com/cloudflare/skills), both Apache 2.0: `impeccable`, `cloudflare`.
+- [alejandrobailo/no-use-effect](https://github.com/alejandrobailo/no-use-effect): `no-use-effect`.
+
+`pr` and `design-engineering` are written here. `pr` started from the selegic-core PR skill, with the repo-specific parts replaced by rules for reading a repo's own conventions.
 
 ## License
 
