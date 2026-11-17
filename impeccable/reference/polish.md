@@ -1,3 +1,5 @@
+<!-- Modified from pbakaus/impeccable v4.7.0 for this fork; see THIRD_PARTY_NOTICES.md. -->
+
 > **Additional context needed**: quality bar and shipping constraints.
 
 Polish is refinement, never concealed redesign. Preserve the incumbent visual world, content, behavior, and everything outside scope. If the concept itself is wrong, say so and recommend redesign or `bolder` instead of smuggling in a replacement.
@@ -72,7 +74,7 @@ Read the `details-*` files that [craft-floor.md](craft-floor.md) names for what 
 
 ### Interaction and state
 
-- Every control needs appropriate default, hover, focus, active, disabled, loading, error, and success behavior.
+- Every control needs appropriate default, hover, focus, active, disabled, loading, error, and success behavior — and none of them changes the element's geometry ([details-states.md](details-states.md)).
 - Preserve visible keyboard focus, logical tab order, labels, and platform-appropriate touch targets.
 - Keep motion coherent, interruptible, and performant. Do not add animation merely to make polish visible.
 - Validate long, missing, localized, offline, slow, and permission-limited content where the product can encounter it.

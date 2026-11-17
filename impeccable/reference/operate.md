@@ -1,3 +1,5 @@
+<!-- Modified from pbakaus/impeccable v4.7.0 for this fork; see THIRD_PARTY_NOTICES.md. -->
+
 # Operate mode depth (and Read notes)
 
 When design SERVES the product: app UIs, admin dashboards, settings panels, data tables, tools, authenticated surfaces, anything where the user is in a task. The essentials live in SKILL.md's modes and [craft-floor.md](craft-floor.md); this file is extended depth, written for Operate surfaces. Read surfaces (docs, guides, long-form) take SKILL.md's Read mode plus this file's typography and consistency rules; their prose measure and navigation matter more than component density.
@@ -47,7 +49,7 @@ Every interactive component has: default, hover, focus, active, disabled, loadin
 - Decorative motion that doesn't convey state.
 - Inconsistent component vocabulary across screens. If the "save" button looks different in two places, one is wrong.
 - Display fonts in UI labels, buttons, data.
-- Reinventing standard affordances for flavor (custom scrollbars, weird form controls, non-standard modals).
+- Replacing standard affordances with custom behavior (scroll physics, weird form controls, non-standard modals). Theming scrollbar and selection colour from the palette is expected.
 - Heavy color or full-saturation accents on inactive states.
 - Modal as first thought. Modals are usually laziness. Exhaust inline / progressive alternatives first.
 

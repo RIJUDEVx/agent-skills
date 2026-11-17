@@ -62,7 +62,7 @@ These are not part of the pipeline above. They are here because every repo needs
 
 ## Skills for the interface
 
-- **[design-engineering](./design-engineering/SKILL.md)**: The craft rules that only break after the build: a hover that moves the layout, a weight that is wider than the one it replaced, a transition that drops frames. Start with the nav-hover rule, then the variable-font axes.
+- **[impeccable](./impeccable/SKILL.md)**: A design director for interface work: shape, critique, audit, animate, typeset, colour, motion, accessibility, and design-system capture. It also carries the craft rules that break only after the build: hover reflow, weight is width, variable-font axes, and frame-dropping motion.
 
   > Making nav links bold on hover pushes everything next to them. Heavier weights are also wider. Variable fonts with a grade axis get darker without getting wider:
   >
@@ -71,7 +71,6 @@ These are not part of the pipeline above. They are here because every repo needs
   >   font-variation-settings: "GRAD" 150;
   > }
   > ```
-- **[impeccable](./impeccable/SKILL.md)**: A design director for interface work: shape, critique, audit, animate, typeset, colour, motion, accessibility, and design-system capture.
 - **[improve-animations](./improve-animations/SKILL.md)**: Surveys a codebase's motion code and writes prioritized, self-contained plans for other agents to execute. Read-only on source.
 - **[vitest](./vitest/SKILL.md)**: Vitest's API, mocking, configuration, and test filtering, in one reference.
 - **[cloudflare](./cloudflare/SKILL.md)**: Picks the Cloudflare product for a job, then loads the reference for it.
@@ -121,7 +120,7 @@ Most of these started as other people's skills. I cut them down, joined them int
 - [pbakaus/impeccable](https://github.com/pbakaus/impeccable) and [cloudflare/skills](https://github.com/cloudflare/skills), both Apache 2.0: `impeccable`, `cloudflare`.
 - [alejandrobailo/no-use-effect](https://github.com/alejandrobailo/no-use-effect): `no-use-effect`.
 
-`pr` and `design-engineering` are written here. `pr` started from the selegic-core PR skill, with the repo-specific parts replaced by rules for reading a repo's own conventions.
+`pr` is written here. It started from the selegic-core PR skill, with the repo-specific parts replaced by rules for reading a repo's own conventions. `impeccable` carries local additions: `reference/details-states.md` and the edits recorded in [THIRD_PARTY_NOTICES.md](./THIRD_PARTY_NOTICES.md).
 
 ## License
 

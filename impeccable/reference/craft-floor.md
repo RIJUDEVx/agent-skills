@@ -1,3 +1,5 @@
+<!-- Modified from pbakaus/impeccable v4.7.0 for this fork; see THIRD_PARTY_NOTICES.md. -->
+
 # Craft floor
 
 Load this after the direction is settled, and build without announcing the checklist. A pinned brief or the committed visual world overrides anything here; your own habit does not. When the design hook is active it already enforces the mechanical checks below as you edit: act on its findings instead of re-auditing each rule.
@@ -10,8 +12,9 @@ Each of these is a check on the built result, not an intention. Run them togethe
 - **Depth:** shadows carry an offset and a soft blur. A zero-offset colored halo is decoration.
 - **Spacing:** tight groups, generous separation, more space above a heading than below it. Read the computed values.
 - **Type:** body measure 65–75ch, display max 6rem, tracking floor -0.04em, balanced headings, obvious scale and weight steps. Run the real copy at every breakpoint and fix what overflows.
-- **Motion:** one authored moment, not scattered effects and not one identical entrance on every section. Exponential ease-out from an already-visible default. Reach past transform and opacity: blur, backdrop-filter, clip-path, mask, and shadow belong to the palette when they stay smooth.
+- **Motion:** one authored moment, not scattered effects and not one identical entrance on every section. Exponential ease-out from an already-visible default. Reach past transform and opacity: blur, backdrop-filter, clip-path, mask, and shadow belong to the palette when they stay smooth, and check what makes motion drop frames.
 - **States:** hover, disabled, loading, error, empty. Plus real content, working controls, responsive composition, keyboard focus.
+- **Stable states:** no hover, focus, active or selected state changes an element's box. Measure widths at rest and in each state with the real font loaded — hover reflow, weight/axis shifts and jittering numerals all fail this check.
 - **Browser surfaces:** the parts you did not draw still carry the design. Text selection, the caret, custom scrollbars, focus rings, underline offset, and the numerals in tabular data all ship with browser defaults that belong to no design system. Theme them from the palette. This is the cheapest signal that a page was built rather than assembled, and the one models skip most reliably.
 - **Copy:** the product's own language. Controls name their action; errors name the problem and the recovery.
 - **Coverage:** every brief requirement present and findable within seconds.
@@ -20,6 +23,7 @@ Each of these is a check on the built result, not an intention. Run them togethe
 
 These hold the exact values this floor does not. When the edit reaches one of these topics, read its file first:
 
+- States that do not move — hover reflow, weight/axis shifts, jittering numbers, dropped frames: [details-states.md](details-states.md)
 - Radius, optical alignment, shadows, image outlines, icons: [details-surfaces.md](details-surfaces.md)
 - Transitions, press feedback, entrances, exits, icon swaps: [details-motion.md](details-motion.md)
 - Grouping, shared edges, clearances, breakpoints, RTL: [details-layout.md](details-layout.md)

@@ -1,3 +1,5 @@
+<!-- Modified from pbakaus/impeccable v4.7.0 for this fork; see THIRD_PARTY_NOTICES.md. -->
+
 How text renders, wraps, and behaves in mixed-direction content. Bad wrapping, widows and truncation only show up at real content lengths, so read the rendered page rather than scanning the code. [typeset.md](typeset.md) owns measure, hierarchy, and role decisions.
 
 These are exact values and recipes, loaded when the work reaches this topic. Direction comes from the playbook and [craft-floor.md](craft-floor.md); the brief, DESIGN.md, and the project's tokens and density override anything here. Use a value as written rather than a familiar-looking substitute. Web only: native platforms follow [ios.md](ios.md) or [android.md](android.md).
@@ -174,10 +176,6 @@ Two refinements for mixed-direction text:
 - **Long paragraphs align by their own language.** A one- or two-line snippet follows the surrounding UI's direction. A paragraph of three or more lines aligns to its own script instead, so an English paragraph stays start-aligned LTR even inside an RTL interface. `text-align: start` with the correct `lang`/`dir` on the paragraph element handles this.
 - **Never reverse digits.** Numbers keep their order in every direction, so a phone number or "541" reads identically in RTL. Browsers handle this through the Unicode bidi algorithm. Never fight it with manual reordering, and wrap mixed number and text values in `<bdi>` where adjacent RTL text disturbs them.
 
-## Tabular numbers on changing values
-
-Digits have different widths by default, so timers, counters and prices shift the layout as they update. Apply `font-variant-numeric: tabular-nums` to any value that changes.
-
 ## Language and bidi behavior
 
 Set `lang` so browsers and assistive technology pick the right pronunciation, quotes and hyphenation. Set `dir` at the document or at the content boundary where direction changes. Preserve digit order, and use `<bdi>` to isolate a mixed-direction value. Spatial mirroring and logical CSS properties belong to [details-layout.md](details-layout.md).
@@ -313,7 +311,7 @@ A variable font is not automatically better. At one or two weights, static files
 
 ## Load intended weights and styles
 
-Use a weight or style the active family does not provide and the browser may synthesize it, so load the faces the design uses. `none` disables weight, style, small-cap, superscript and subscript synthesis together and can erase distinctions when the real face is unavailable. Verify the whole fallback stack and every emphasis state before setting it.
+Use a weight or style the active family does not provide and the browser may synthesize it by smearing the outline. The result is wider than the real weight (so it shifts the layout), painted twice (so it costs a fill), and slightly soft at small sizes. Load the faces the design uses. `none` disables weight, style, small-cap, superscript and subscript synthesis together and can erase distinctions when the real face is unavailable. Verify the whole fallback stack and every emphasis state before setting it.
 
 ```css
 .brand-wordmark {
@@ -328,23 +326,23 @@ For body and interface text, keep synthesis enabled unless a verified font setup
 
 Variable-font controls, each with a four-letter tag. A font supports only the axes its designer included.
 
-| Axis | Tag | Controls |
-| --- | --- | --- |
-| Weight | `wght` | Stroke thickness (like `font-weight`) |
-| Optical size | `opsz` | Details and spacing tuned for the display size |
-| Width | `wdth` | Glyph width |
-| Slant | `slnt` | Slant angle |
-| Custom | e.g. `GRAD` (Roboto Flex) | Whatever the designer built |
+| Axis | Tag | Controls | Changes width? |
+| --- | --- | --- | --- |
+| Weight | `wght` | Stroke thickness (like `font-weight`) | Yes |
+| Optical size | `opsz` | Details and spacing tuned for the display size | Slightly |
+| Width | `wdth` | Glyph width | Yes |
+| Slant | `slnt` | Slant angle | Slightly |
+| Custom | e.g. `GRAD` (Roboto Flex) | Whatever the designer built | No |
 
-Inter's variable file exposes only `wght` and `opsz`.
+Inter's variable file exposes only `wght` and `opsz`. Roboto Flex ships `GRAD`. Check the family's documentation before using a tag: an unsupported tag is ignored, silently, with no error. Tags are case-sensitive in practice: `"GRAD"`, `"wght"`, `"opsz"`.
 
 Optical sizes predate variable fonts, and many families still ship them as separate files. Heldane Text is sturdier and more spaced for reading sizes, Heldane Display finer for large ones.
 
-**Weight is width.** A heavier weight is a wider set of glyphs, so swapping the weight on hover pushes the neighbours along a nav row. When the family ships a grade axis (`GRAD`), raise the grade instead: it darkens the stroke at the same weight and the same width, so nothing reflows. See the `design-engineering` skill for the pattern and for the fallback when the family has no grade axis.
+**Weight is width.** A heavier weight is a wider set of glyphs, so swapping the weight on hover pushes the neighbours along a nav row. Raise `GRAD` instead when the family ships it: same darkness, same width. For the full pattern and the fallback when there is no grade axis, see [details-states.md](details-states.md).
 
 ## Properties over axis tags
 
-When a property exists, use it. `font-weight` keeps working when a non-variable fallback renders, where `font-variation-settings` silently does nothing. Save raw tags for custom axes with no property of their own:
+When a property exists, use it. `font-weight` keeps working when a non-variable fallback renders, where `font-variation-settings` silently does nothing. The properties map to axes as `font-weight` → `wght`, `font-optical-sizing: auto` → `opsz`, `font-stretch` → `wdth`, and `font-style: oblique <angle>` → `slnt`. `font-variation-settings` overrides the property for the axes it names, and it does nothing at all on a static font. Save raw tags for custom axes with no property of their own:
 
 ```css
 /* Good: common axes use the properties */
@@ -395,7 +393,7 @@ Same rule as axes. Prefer the `font-variant-*` properties and reserve `font-feat
 }
 ```
 
-Tabular numbers matter for changing values. Without them each digit has a different width and the layout shifts as values update.
+Tabular numbers matter for changing values: digits are usually proportional (`1` is narrower than `0`), so a column of numbers, or one that updates in place, jitters. Apply `font-variant-numeric: tabular-nums` in tables, counters, timers, prices, and any list where a value updates in place. The property form is the right one; `font-feature-settings: "tnum"` works on static fonts too, but reach for the property.
 
 ## Small caps, superscripts, subscripts
 
@@ -423,6 +421,7 @@ Both require the font to include the glyphs.
 | Selection disabled across application chrome | Restore it; suppress only where it conflicts with a drag or gesture |
 | Extra-info hint with no visual cue | Dotted underline via `text-decoration-style: dotted` |
 | Thin/Light weight on `14px` UI text | Weight `400`+ below `18px`; thin weights are display-only |
+| Weight or size change on hover reflows the row | `details-states.md`: change colour, raise `GRAD`, or reserve the width |
 | `leading-none` on a three-line card description | At least `1.4` on any text that wraps to 3+ lines |
 
 ## Checks

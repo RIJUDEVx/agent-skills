@@ -1,3 +1,5 @@
+<!-- Modified from pbakaus/impeccable v4.7.0 for this fork; see THIRD_PARTY_NOTICES.md. -->
+
 Micro-interaction recipes: interruptible transitions, press feedback, staged entrances and exits, icon swaps, and compositing. [animate.md](animate.md) decides whether something moves; this file sets the values once it does. Every duration, curve, scale and blur is a specific value: `cubic-bezier(0.2, 0, 0, 1)` is not `cubic-bezier(0.4, 0, 0.2, 1)`, and `0.96` is not `0.95`.
 
 These are exact values and recipes, loaded when the work reaches this topic. Direction comes from the playbook and [craft-floor.md](craft-floor.md); the brief, DESIGN.md, and the project's tokens and density override anything here. Use a value as written rather than a familiar-looking substitute. Web only: native platforms follow [ios.md](ios.md) or [android.md](android.md).
@@ -425,6 +427,8 @@ Use exactly these values for contextual icon animations. Do not deviate:
 
 Never use `transition: all` or Tailwind's `transition-all`. Always name the exact properties that change. Tailwind's bare `transition` maps to a curated list of colors, opacity, shadow and transforms rather than `all`, and naming what changes is still better.
 
+Never transition `font-weight`, `font-size` or `padding` on a live element: they cost layout on every frame. For variable-font axis animation, register the number with `@property` and animate that, per [details-states.md](details-states.md).
+
 ### Why
 
 - `transition: all` forces the browser to watch every property for changes
@@ -514,6 +518,7 @@ Modern browsers optimize well on their own. Add `will-change` only when you see 
 | Jarring staged entrance or exit | Stagger infrequent entrances; keep exits subtle |
 | Theme toggle crossfades the whole page | Disable transitions for the swap, force a reflow, restore on the next frame |
 | `transition: all` on elements | Specify exact properties |
+| Animation drops frames: animating `width`, `height`, `top` or `font-weight` | Use transform or FLIP; check the Performance panel |
 | First-frame animation stutter | Add `will-change: transform` (sparingly) |
 | Hairline icon beside bold text | Match the stroke width to the text weight |
 

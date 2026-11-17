@@ -1,3 +1,5 @@
+<!-- Modified from pbakaus/impeccable v4.7.0 for this fork; see THIRD_PARTY_NOTICES.md. -->
+
 Most accessibility is free if you use the platform. Reviewing means two walks: keyboard-only, where every flow completes without a mouse, then screen-reader, where every control announces a name, a role and its state. When unsure, take the platform default over a custom rebuild, and remove ARIA rather than add it.
 
 These are exact values and recipes, loaded when the work reaches this topic. Direction comes from the playbook and [craft-floor.md](craft-floor.md); the brief, DESIGN.md, and the project's tokens and density override anything here. Use a value as written rather than a familiar-looking substitute. Web only: native platforms follow [ios.md](ios.md) or [android.md](android.md).
@@ -85,7 +87,7 @@ Native `disabled` supplies the platform's complete disabled behavior. It removes
 
 ## Focus rings
 
-Style `:focus-visible`, not bare `:focus`. The browser shows it for keyboard and assistive-tech focus and suppresses it for mouse clicks, where focus is already obvious. Never write `outline: none` or `focus:outline-none` without a visible replacement, which removes keyboard navigation for sighted keyboard users.
+Style `:focus-visible`, not bare `:focus`. The browser shows it for keyboard and assistive-tech focus and suppresses it for mouse clicks, where focus is already obvious. Never write `outline: none` or `focus:outline-none` without a visible replacement, which removes keyboard navigation for sighted keyboard users. Draw the ring with `outline` or `box-shadow`, never `border`: a border ring changes the element's box and shifts the layout, while outline and box-shadow do not.
 
 Prefer the browser's unmodified focus indicator, which adapts to platform and forced-color settings without the author predicting every background. Adding only `outline-offset` preserves it. A custom `outline: 2px solid` with no color renders `currentColor`, which is not automatically accessible, because the outline may cross colors unlike the text's own background. The preference order:
 

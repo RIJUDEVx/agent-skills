@@ -1,3 +1,5 @@
+<!-- Modified from pbakaus/impeccable v4.7.0 for this fork; see THIRD_PARTY_NOTICES.md. -->
+
 > **Additional context needed**: performance constraints.
 
 Use motion to explain state, relationship, and hierarchy, or to create one authored moment the surface has earned. Decoration without purpose is animation debt.
@@ -70,7 +72,7 @@ Exact values for press feedback, icon swaps, staged entrances, exits, and compos
 - Use scroll-driven motion only when the scroll relationship itself carries meaning, with a robust fallback.
 - Do not add a dependency for an effect the existing stack can express cleanly.
 
-Keep content visible in the default state so failed scripts do not hide the page. Avoid casually animating layout-driving properties such as `width`, `height`, `top`, `left`, and margins; use FLIP, transforms, or grid techniques when appropriate. Bound blur, filter, shadow, canvas, and shader work to isolated regions. Apply `will-change` only during known animation. Measure on target viewports and devices rather than assuming transform means fast.
+Keep content visible in the default state so failed scripts do not hide the page. Avoid casually animating layout-driving properties such as `width`, `height`, `top`, `left`, margins, `font-weight` and `font-size`; use FLIP, transforms, or grid techniques when appropriate, and see [details-states.md](details-states.md) for states that must not change geometry. Bound blur, filter, shadow, canvas, and shader work to isolated regions. Apply `will-change` only during known animation. Measure on target viewports and devices rather than assuming transform means fast.
 
 ## Accessibility and control
 

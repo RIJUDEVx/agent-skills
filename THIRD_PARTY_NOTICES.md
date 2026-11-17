@@ -1,6 +1,6 @@
 # Third-party notices
 
-Parts of this repo are adapted from the projects below. Each is used under the MIT License, reproduced here as it requires.
+Parts of this repo are adapted from the projects below. Each is used under the MIT or Apache 2.0 license noted for each, reproduced here as it requires.
 
 ## mattpocock/skills
 
@@ -100,8 +100,16 @@ available in every repo. Upstream, license, and what came from where:
 redistribution. It is here because the repo owner uses it; replace it with a licensed
 copy before publishing this repo.
 
-`pr` and `design-engineering` were written for this repo and are covered by the MIT
-license in [LICENSE](./LICENSE).
+`pr` was written for this repo and is covered by the MIT license in [LICENSE](./LICENSE).
+
+The `impeccable` copy in this repo is modified from pbakaus/impeccable v4.7.0 (engine
+0.1.16). Changes: merged the repo's `design-engineering` rules in — new
+`reference/details-states.md`, edits to `details-type.md`, `details-motion.md`,
+`details-a11y.md`, `craft-floor.md`, `typeset.md`, `animate.md`, `polish.md`,
+`SKILL.md` routing and Setup, `routing.md`, `operate.md`, `doctor.md`, plus a split of
+`critique.md` into `critique-reference.md`. `reference/details-states.md` is original
+to this repo and covered by [LICENSE](./LICENSE); the modified upstream files remain
+Apache 2.0 and carry notices in the files themselves.
 
 ### MIT notice for the imported skills
 
