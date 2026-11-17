@@ -1,6 +1,6 @@
 ---
 name: t3-tools
-description: Use when the work involves T3 Code itself: linking or watching a pull request, delegating to another model or provider, waiting on a background command or test run, showing a chart, diagram or HTML visual in the thread, previewing a page or simulator, scheduling, or requesting a secret. Gives the exact T3 tool names and how to load or call them in this harness, so nothing is searched or guessed. Also use to explain visually, for an inline diagram, or when the user says show me.
+description: Use when the work involves T3 Code itself: pull requests, issues, delegating to another model or provider, threads and queued messages, worktrees and projects, waiting on a background command or test run, showing a chart, diagram or HTML visual in the thread, previewing a page or simulator, scheduling, or requesting a secret. Gives the exact T3 tool names and how to load or call them in this harness, so nothing is searched or guessed. Also use to explain visually, for an inline diagram, or when the user says show me.
 ---
 
 # T3 tools
@@ -22,15 +22,22 @@ Reach for the tool named here; do not search or guess.
 
 | Family | Claude `select:` value | Tools |
 |---|---|---|
-| Delegate | `mcp__t3-code__orchestrator_capabilities,mcp__t3-code__delegate_task,mcp__t3-code__task_status,mcp__t3-code__task_cancel` | `orchestrator_capabilities`, `delegate_task`, `task_status`, `task_cancel`, `create_threads` |
-| Threads | `mcp__t3-code__t3_thread_search,mcp__t3-code__t3_thread_read,mcp__t3-code__t3_thread_list,mcp__t3-code__t3_thread_send,mcp__t3-code__t3_thread_wait,mcp__t3-code__t3_thread_launch` | `t3_thread_search`, `t3_thread_read`, `t3_thread_list`, `t3_thread_send`, `t3_thread_wait`, `t3_thread_launch`, `t3_thread_configure`, `t3_thread_update`, `t3_thread_organize`, `t3_thread_transfer`, `t3_thread_interrupt` |
-| PRs | `mcp__t3-code__link_pull_request,mcp__t3-code__watch_pull_request,mcp__t3-code__unwatch_pull_request,mcp__t3-code__list_thread_pull_requests` | `link_pull_request(s)`, `unlink_pull_request(s)`, `list_thread_pull_requests`, `watch_pull_request`, `unwatch_pull_request` |
+| Delegate | `mcp__t3-code__orchestrator_capabilities,mcp__t3-code__delegate_task,mcp__t3-code__task_status,mcp__t3-code__task_cancel,mcp__t3-code__create_threads` | `orchestrator_capabilities`, `delegate_task`, `task_status`, `task_cancel`, `create_threads` |
+| Threads | `mcp__t3-code__t3_thread_search,mcp__t3-code__t3_thread_read,mcp__t3-code__t3_thread_list,mcp__t3-code__t3_thread_send,mcp__t3-code__t3_thread_wait,mcp__t3-code__t3_thread_launch,mcp__t3-code__t3_thread_configure,mcp__t3-code__t3_thread_update,mcp__t3-code__t3_thread_organize,mcp__t3-code__t3_thread_transfer,mcp__t3-code__t3_thread_interrupt,mcp__t3-code__t3_thread_send_attachments` | `t3_thread_search`, `t3_thread_read`, `t3_thread_list`, `t3_thread_send`, `t3_thread_wait`, `t3_thread_launch`, `t3_thread_configure`, `t3_thread_update`, `t3_thread_organize`, `t3_thread_transfer`, `t3_thread_interrupt`, `t3_thread_send_attachments` |
+| Queue & requests | `mcp__t3-code__t3_queue,mcp__t3-code__t3_pending_request,mcp__t3-code__t3_workflow_stop` | `t3_queue`, `t3_pending_request`, `t3_workflow_stop` |
+| PRs | `mcp__t3-code__link_pull_request,mcp__t3-code__link_pull_requests,mcp__t3-code__unlink_pull_request,mcp__t3-code__unlink_pull_requests,mcp__t3-code__list_thread_pull_requests,mcp__t3-code__watch_pull_request,mcp__t3-code__unwatch_pull_request,mcp__t3-code__read_pull_request_guide,mcp__t3-code__write_pull_request_guides` | `link_pull_request(s)`, `unlink_pull_request(s)`, `list_thread_pull_requests`, `watch_pull_request`, `unwatch_pull_request`, `read_pull_request_guide`, `write_pull_request_guides` |
+| Issues | `mcp__t3-code__create_issue,mcp__t3-code__comment_on_issue,mcp__t3-code__list_issues,mcp__t3-code__read_issue,mcp__t3-code__link_issue,mcp__t3-code__unlink_issue,mcp__t3-code__list_thread_issues,mcp__t3-code__set_issue_state` | `create_issue`, `comment_on_issue`, `list_issues`, `read_issue`, `link_issue`, `unlink_issue`, `list_thread_issues`, `set_issue_state` |
 | Background | `mcp__t3-code__t3_background_wait` | `t3_background_wait` |
-| Visuals | `mcp__t3-code__html_preview,mcp__t3-code__html_render` | `html_preview`, `html_render` |
-| Browser | `mcp__t3-code__preview_open,mcp__t3-code__preview_navigate,mcp__t3-code__preview_snapshot,mcp__t3-code__preview_act,mcp__t3-code__preview_wait_for,mcp__t3-code__preview_status,mcp__t3-code__preview_evaluate` | `preview_*`, `t3_preview_list`, `t3_preview_close` (browser work only) |
+| Visuals & output | `mcp__t3-code__html_preview,mcp__t3-code__html_render,mcp__t3-code__send_to_user` | `html_preview`, `html_render`, `send_to_user` |
+| Browser | `mcp__t3-code__preview_open,mcp__t3-code__preview_navigate,mcp__t3-code__preview_snapshot,mcp__t3-code__preview_act,mcp__t3-code__preview_wait_for,mcp__t3-code__preview_status,mcp__t3-code__preview_evaluate,mcp__t3-code__preview_dialog,mcp__t3-code__preview_resize,mcp__t3-code__preview_set_appearance,mcp__t3-code__preview_recording_start,mcp__t3-code__preview_recording_stop,mcp__t3-code__t3_preview_list,mcp__t3-code__t3_preview_close` | `preview_*` (open, navigate, snapshot, act, wait_for, status, evaluate, dialog, resize, set_appearance, recording_start, recording_stop), `t3_preview_list`, `t3_preview_close` (browser work only) |
 | Device | `mcp__t3-code__device_list,mcp__t3-code__device_open,mcp__t3-code__device_screenshot,mcp__t3-code__device_close` | `device_*` (taps and text go through the `agent-device` command that `device_open` returns) |
-| Schedule | `mcp__t3-code__schedule_task,mcp__t3-code__list_scheduled_tasks,mcp__t3-code__delete_scheduled_task,mcp__t3-code__run_scheduled_task_now` | `schedule_task` and the matching list, delete, and run-now tools |
+| Schedule | `mcp__t3-code__schedule_task,mcp__t3-code__list_scheduled_tasks,mcp__t3-code__delete_scheduled_task,mcp__t3-code__run_scheduled_task_now` | `schedule_task`, `list_scheduled_tasks`, `delete_scheduled_task`, `run_scheduled_task_now` |
 | Secrets | `mcp__t3-code__request_secret` | `request_secret` |
+| Worktrees | `mcp__t3-code__t3_worktree_status,mcp__t3-code__t3_worktree_list,mcp__t3-code__t3_worktree_handoff` | `t3_worktree_status`, `t3_worktree_list`, `t3_worktree_handoff` |
+| Projects | `mcp__t3-code__t3_project_clone,mcp__t3-code__t3_project_create,mcp__t3-code__t3_project_read,mcp__t3-code__t3_project_update,mcp__t3-code__t3_project_list,mcp__t3-code__t3_project_delete` | `t3_project_clone`, `t3_project_create`, `t3_project_read`, `t3_project_update`, `t3_project_list`, `t3_project_delete` |
+| Environment | `mcp__t3-code__t3_environment_read,mcp__t3-code__t3_environment_preferences_update` | `t3_environment_read`, `t3_environment_preferences_update` |
+| Themes | `mcp__t3-code__t3_theme_read,mcp__t3-code__t3_theme_set` | `t3_theme_read`, `t3_theme_set` |
+| Attachments | `mcp__t3-code__t3_attachment_prepare_upload,mcp__t3-code__t3_thread_send_attachments,mcp__t3-code__t3_attachment_discard` | `t3_attachment_prepare_upload`, `t3_thread_send_attachments` (also under Threads), `t3_attachment_discard` |
 
 For cloud routines or one-time scheduled agent runs, use the `schedule` skill
 instead. Those are not T3 tasks.
@@ -70,12 +77,12 @@ asks for models from different families, take them from Strong.
 
 | Tool | Rule |
 |---|---|
-| `html_preview` | `html` is the page text, not a `path`. |
+| `html_preview` | `html` takes inline page text, `path` an absolute `.html` file path; call it before `html_render`. |
 | `html_render` | `title` and `height` are required. |
 | `delegate_task` | `mode` is `"async"` or `"wait"`. Use a distinct `clientRequestId`. |
 | `preview_resize` | `preset` is a device name such as `iphone-se`. |
 | `run_scheduled_task_now` | Pass `taskId`, not `scheduledTaskId`. |
-| `t3_thread_read` | `afterPosition` is 0 or greater. |
+| `t3_thread_read` | `afterPosition` is -1 or greater; `-1` reads from the start, then follow `nextPosition`. |
 | `t3_queue` | Use `action` (`list`, `read`, `edit`, `cancel`, `reorder`, `promote_to_steer`). |
 
 ## Visuals
@@ -88,8 +95,10 @@ Write a PNG file only when the user asks for a file to post elsewhere.
 ## Background waits
 
 Wait on a background command or test run with `t3_background_wait`, passing the
-background task ids. On OpenCode, wait with `t3_thread_wait` (or
-`t3_background_wait` if the search returns it). Never wait by polling with `Monitor`, `sleep`, or
+background task ids. On OpenCode both `t3_background_wait` and `t3_thread_wait`
+are available: use `t3_background_wait` for background commands and test runs,
+and `t3_thread_wait` for threads (add `untilDelegatedWorkSettled` to include
+delegated work). Never wait by polling with `Monitor`, `sleep`, or
 `setTimeout`. `execute` has no `setTimeout` or `sleep`.
 
 ## PRs
@@ -97,3 +106,33 @@ background task ids. On OpenCode, wait with `t3_thread_wait` (or
 Call `link_pull_request` with the PR URL right after `gh pr create`, before
 anything else. Call `watch_pull_request` only when this thread owns the PR and is
 babysitting it. Call `unwatch_pull_request` before any handoff or question.
+
+`write_pull_request_guides` starts review-guide runs (up to 20 PRs, minutes each,
+in a temporary checkout); read the stored guide with `read_pull_request_guide`,
+which also reports whether the PR head has moved since it was written.
+
+## Issues
+
+Link every issue you work on or file with `link_issue` (by URL or key). File with
+`create_issue`, add updates with `comment_on_issue`, and change status with
+`set_issue_state`.
+
+## Threads, queues and pending requests
+
+`t3_queue` manages queued messages (`list`, `read`, `edit`, `cancel`, `reorder`,
+`promote_to_steer`). A child that asks a question ends a `delegate_task` wait;
+answer it with `t3_pending_request` (`respond`) on the child's thread. Use
+`send_to_user` for content the user must read in full mid-turn, such as a draft
+or a code block; do not repeat it in the final reply.
+
+## Worktrees and projects
+
+Call `t3_worktree_status` before `t3_worktree_handoff`. For a separate agent in
+its own checkout, use `t3_thread_launch` with `workspaceStrategy` instead of a
+handoff; `t3_worktree_list` lists branch refs and checkout paths. Project
+registration and setup go through the `t3_project_*` tools.
+
+## Themes
+
+Only restyle T3 Code when the user asks. Call `t3_theme_read` before
+`t3_theme_set`.
