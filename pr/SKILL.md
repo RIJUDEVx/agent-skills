@@ -61,6 +61,7 @@ genuinely do not apply. Write for a reviewer who knows the product but not the c
 - **How can I test it?** — the steps a reviewer follows by hand and what they should see.
   Manual verification only; check results already live in the CI UI.
 - **Screenshots or demo** — required for any UI change. See step 6.
+- **Before/after table** — required for performance work and improvements. See step 6.
 - **Notes for reviewers** — root cause for a fix, why this approach over the alternatives,
   reverse state. One short paragraph each.
 - **Anything to know before release?** — migrations, flags, and config or data updates.
@@ -102,16 +103,29 @@ for, no restating the diff.
 
 *Done when:* the labels and boards match what the repo actually defines.
 
-## 6. Screenshots
+## 6. Before/after evidence
 
-- Quick before/after: `--attach` the files, alt text after `#`, and put a matching
-  `![...](./after.png)` in the body so `gh` rewrites it to the upload URL.
-- Formats, limits, and edge cases are in the `gh` skill under "Attaching images and
-  videos".
+A PR that claims an improvement shows its before and after. Two forms, picked by what
+changed: a table for performance and other measurable improvements, captures for UI
+changes.
+
+- **Performance / improvement table.** Required whenever the change is framed as an
+  improvement — speed, size, cost, throughput, accuracy, or the like. Use a proper
+  table, one row per metric, with columns for the metric, its unit, before, after, and
+  delta. Measure both sides the same way — same input, environment, and run count —
+  and state that in a one-line caption. Put the table beside the improvement it
+  documents, not buried in notes. Where a number genuinely cannot be measured, say why
+  instead of inventing one.
+- **Quick before/after screenshots.** `--attach` the files, alt text after `#`, and put
+  a matching `![...](./after.png)` in the body so `gh` rewrites it to the upload URL.
+- Image formats, limits, and edge cases are in the `gh` skill under "Attaching images
+  and videos".
 - The screenshot section is mandatory for any UI change, and every changed surface gets
   a capture.
 
-*Done when:* every changed UI surface has a before/after capture.
+*Done when:* every claimed improvement has a before/after table with like-for-like
+numbers where measurement was possible, and every changed UI surface has a
+before/after capture.
 
 ## 7. Readiness gate
 
