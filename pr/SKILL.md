@@ -112,10 +112,12 @@ changes.
 - **Performance / improvement table.** Required whenever the change is framed as an
   improvement — speed, size, cost, throughput, accuracy, or the like. Use a proper
   table, one row per metric, with columns for the metric, its unit, before, after, and
-  delta. Measure both sides the same way — same input, environment, and run count —
-  and state that in a one-line caption. Put the table beside the improvement it
-  documents, not buried in notes. Where a number genuinely cannot be measured, say why
-  instead of inventing one.
+  change. Give the change as a relative figure — a percentage or a multiplier (`2x`,
+  `1.5x`) — so the win reads at a glance: `120 ms → 60 ms, 2x faster`. For timing, name
+  the direction in words, since the smaller number is the win. Measure both sides the
+  same way — same input, environment, and run count — and state that in a one-line
+  caption. Put the table beside the improvement it documents, not buried in notes.
+  Where a number genuinely cannot be measured, say why instead of inventing one.
 - **Quick before/after screenshots.** `--attach` the files, alt text after `#`, and put
   a matching `![...](./after.png)` in the body so `gh` rewrites it to the upload URL.
 - Image formats, limits, and edge cases are in the `gh` skill under "Attaching images
@@ -124,8 +126,8 @@ changes.
   a capture.
 
 *Done when:* every claimed improvement has a before/after table with like-for-like
-numbers where measurement was possible, and every changed UI surface has a
-before/after capture.
+numbers and a percentage or multiplier for the change where measurement was possible,
+and every changed UI surface has a before/after capture.
 
 ## 7. Readiness gate
 
