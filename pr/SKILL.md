@@ -137,6 +137,17 @@ head SHA.
 
 *Done when:* the edit still satisfies steps 3–7 and nothing required was dropped.
 
+## 9. Stacked PRs
+
+When the change has to land as a chain of PRs, build it with `gh stack` (see the
+`gh` skill, "Stacked pull requests") rather than opening each PR by hand. Each
+PR still needs its own title, body, labels, and readiness check against its own
+base, so steps 3–8 apply to every layer.
+
+In T3 Code, use the `t3-tools` skill: call `link_pull_requests` with every PR URL
+after `gh stack submit`, keep `watch_pull_request` to the PR this thread owns, and
+call `unwatch_pull_request` before any handoff or question.
+
 ## Guards
 
 - The draft is the default state; readiness waits on a green check.

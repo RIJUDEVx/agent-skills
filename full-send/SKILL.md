@@ -91,7 +91,21 @@ edit. The route is your decision, not the scout's.
 
 If a spec or tickets exist, or an agreed `$architect` design does, skip the stages
 they already cover. Take the lightest route that fits. If the work proves bigger
-than the route, move up one and say so. All routes end in one PR.
+than the route, move up one and say so. All routes end in one PR, or in a stack
+when stacked PRs were asked for.
+
+### Stacked PRs
+
+When the user asks for stacked PRs, or the slices of a Split route must land in
+order, build them with `gh stack` instead of one PR (see the `gh` skill,
+"Stacked pull requests"). In a non-interactive harness, submit with `--auto` and
+`--open`, since new PRs are drafts otherwise. Every layer still needs its own
+proof and readiness gate, and a lower PR must merge before the one above it is
+retargeted and re-checked.
+
+In T3 Code, use the `t3-tools` skill: call `link_pull_requests` with every PR URL
+right after `gh stack submit`, keep `watch_pull_request` to the PR this thread
+owns, and call `unwatch_pull_request` before any handoff or question.
 
 ### Review passes
 
